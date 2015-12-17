@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='UTF-8'>
+    <title>半透明テスト</title>
+    <style>
+      html { height: 100%; width: 100%}
+      body {
+        -webkit-app-region: drag;
+        -webkit-user-select: none;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        opacity:0.7;
+      }
+      #wahkyah {
+        height: 100%;
+        width: 100%;
+	background-color:rgba(0,0,0,0.9);
+        color: white;
+	font-size: 144pt;
+      }
+    </style>
+    <script>
+var fs = require('fs');
+var buffer = require('buffer');
+var mows   = require('mows');
+
+var conf = JSON.parse(fs.readFileSync('./.auth.conf', 'utf8'));
+
+var ops = {username: conf.username, password: conf.password};
+var client = mows.createClient(conf.port,conf.url,ops);
+
+
+// globals
+
+//console.log(conf.port, conf.url);
+
+client.subscribe (conf.subscribetopic);
+
+client.on('message', function (topic, message) {
+  line = message.split("\n");
+
+  ar = JSON.parse("[" + line[0] + "]");
+  size = Math.sqrt(ar[0] * ar[0] + ar[1] + ar[1] + ar[2] + ar[2]);
+
+  var currenttext = ""
+  if (size > 1000) {
+  	currenttext = "うああ";
+  } else {
+	currenttext = "";
+  }
+
+  document.getElementById('wahkyah').innerHTML = currenttext;
+});
+    </script>
+  </head>
+  <body>
+    <div id='wahkyah'>半透明のウィンドウ</div>
+  </body>
+</html>

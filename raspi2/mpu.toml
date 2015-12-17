@@ -1,0 +1,37 @@
+# this configuration is compatible to https://github.com/shiguredo/fuji/commit/8898ba198bac7446e676c9a4fca9cdc99a15fd2e
+[gateway]
+
+    name = "peachpi"
+
+    max_retry_count = 7
+    retry_interval = 3  # sec
+
+[[broker."sango/1"]]
+
+    host = "get3.be"
+    port = 1883
+
+    retry_interval = 10
+    topic_prefix = "mpu"
+
+
+[device."dora"]
+    type = "serial"
+
+    broker = "sango"
+    serial = "/dev/ttyACM0"
+    qos = 0
+    baud = 115200
+
+[status]
+
+    broker = "sango"
+    interval = 60
+
+[[status."cpu"]]
+
+    cpu_times = "user, system, idle, nice, iowait, irq, softirq, guest"
+
+[[status."memory"]]
+
+    virtual_memory = "total, available, percent, used, free"
